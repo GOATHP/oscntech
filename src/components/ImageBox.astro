@@ -1,0 +1,7 @@
+---
+interface Props { src?: string; alt: string }
+const { src, alt } = Astro.props;
+---
+<div class="placeholder-img">
+  {src ? <img src={src} alt={alt} loading="lazy" /> : <span>이미지 준비중</span>}
+</div>

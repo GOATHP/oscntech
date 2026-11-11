@@ -1,0 +1,17 @@
+---
+interface Props { items: { label: string; href: string }[] }
+const { items } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<nav class="subnav">
+  <div class="container">
+    {items.map((i) => <a href={i.href} class:list={{ active: path === i.href }}>{i.label}</a>)}
+  </div>
+</nav>
+
+<style>
+  .subnav { border-bottom: 1px solid var(--line); background: #fff; }
+  .container { display: flex; gap: 4px; overflow-x: auto; }
+  a { padding: 16px 18px; white-space: nowrap; color: var(--muted); font-weight: 600; border-bottom: 2px solid transparent; }
+  a.active, a:hover { color: var(--brand); border-bottom-color: var(--brand); }
+</style>

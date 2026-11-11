@@ -1,0 +1,36 @@
+---
+import site from '../data/site.json';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="top">
+      <div class="brand">{site.name}</div>
+      <ul class="info">
+        <li><strong>본사</strong> {site.head}</li>
+        <li><strong>공장</strong> {site.factory}</li>
+        <li>
+          <strong>TEL</strong> <a href={`tel:${site.tel}`}>{site.tel}</a>
+          <span class="sep">|</span>
+          <strong>EMAIL</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="bottom">
+      <span>© {year} {site.name}. All rights reserved.</span>
+      <span class="links"><a href="/privacy">개인정보처리방침</a></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: #1b2430; color: #c5cdd6; padding: 48px 0 28px; font-size: .92rem; }
+  .top { display: flex; gap: 40px; flex-wrap: wrap; }
+  .brand { font-size: 1.3rem; font-weight: 800; color: #fff; min-width: 160px; }
+  .info { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .info strong { color: #fff; margin-right: 6px; }
+  .info a:hover { color: #fff; text-decoration: underline; }
+  .sep { margin: 0 10px; opacity: .4; }
+  .bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: .85rem; }
+  .links a:hover { color: #fff; }
+</style>

@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import refsData from '../data/references.json';
+const refs = refsData.references;
+---
+<Layout title="공급실적">
+  <PageHero eyebrow="Reference" title="공급실적" desc="주요 고객사 납품 실적입니다." />
+  <section class="section">
+    <div class="container">
+      <p class="section-desc">실적 목록은 src/data/references.json 파일에서 추가하거나 수정할 수 있어요.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>연도</th><th>고객사</th><th>납품 설비</th><th>비고</th></tr></thead>
+          <tbody>
+            {refs.map((r) => <tr><td>{r.year}</td><td>{r.client}</td><td>{r.project}</td><td>{r.note}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>

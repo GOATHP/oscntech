@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SubNav from '../../components/SubNav.astro';
+import { aboutNav } from './_subnav';
+import site from '../../data/site.json';
+
+const places = [
+  { label: '본사', address: site.head },
+  { label: '공장', address: site.factory },
+];
+const naver = (a: string) => `https://map.naver.com/p/search/${encodeURIComponent(a)}`;
+const kakao = (a: string) => `https://map.kakao.com/?q=${encodeURIComponent(a)}`;
+---
+<Layout title="오시는 길">
+  <PageHero eyebrow="About" title="회사소개" />
+  <SubNav items={aboutNav} />
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">오시는 길</h2>
+      <div class="places">
+        {places.map((p) => (
+          <div class="place card">
+            <div class="card-body">
+              <div class="eyebrow">{p.label}</div>
+              <h3>{p.address}</h3>
+              <p>TEL {site.tel} · EMAIL {site.email}</p>
+              <div class="links">
+                <a class="btn" href={naver(p.address)} target="_blank" rel="noopener">네이버 지도</a>
+                <a class="btn" href={kakao(p.address)} target="_blank" rel="noopener">카카오맵</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .places { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .place h3 { font-size: 1.25rem; margin: 6px 0 10px; }
+  .links { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .links .btn { padding: 10px 18px; font-size: .95rem; }
+  @media (max-width: 860px) { .places { grid-template-columns: 1fr; } }
+</style>

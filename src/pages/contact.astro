@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import site from '../data/site.json';
+
+// 문의 폼 연결: formspree.io 에서 무료 가입 후 폼을 만들면 나오는 주소를 아래에 넣어 주세요.
+// 비워 두면 '보내기' 버튼이 메일 앱을 열어요.
+const FORM_ENDPOINT = ''; // 예: 'https://formspree.io/f/abcdwxyz'
+---
+<Layout title="문의하기">
+  <PageHero eyebrow="Contact" title="문의하기" desc="설비 견적과 상담 문의를 남겨 주시면 빠르게 연락드리겠습니다." />
+  <section class="section">
+    <div class="container contact">
+      <form class="form" method="POST" action={FORM_ENDPOINT || `mailto:${site.email}`} enctype={FORM_ENDPOINT ? undefined : 'text/plain'}>
+        <div class="row">
+          <label>회사명<input name="company" required /></label>
+          <label>담당자<input name="name" required /></label>
+        </div>
+        <div class="row">
+          <label>연락처<input name="phone" type="tel" required /></label>
+          <label>이메일<input name="email" type="email" required /></label>
+        </div>
+        <label>문의 내용<textarea name="message" rows="7" required></textarea></label>
+        <label class="agree"><input type="checkbox" required /> 개인정보 수집 및 이용에 동의합니다. <a href="/privacy">내용 보기</a></label>
+        <button class="btn" type="submit">보내기</button>
+      </form>
+      <aside class="side card">
+        <div class="card-body">
+          <h3>연락처</h3>
+          <p><strong>TEL</strong> <a href={`tel:${site.tel}`}>{site.tel}</a></p>
+          <p><strong>EMAIL</strong> <a href={`mailto:${site.email}`}>{site.email}</a></p>
+          <p><strong>상담시간</strong> {site.hours}</p>
+          <hr />
+          <p><strong>본사</strong> {site.head}</p>
+          <p><strong>공장</strong> {site.factory}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; align-items: start; }
+  .form { display: grid; gap: 18px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: .95rem; }
+  input, textarea { font: inherit; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; font-weight: 400; }
+  input:focus, textarea:focus { outline: 2px solid var(--brand); border-color: transparent; }
+  .agree { display: flex; align-items: center; gap: 8px; font-weight: 400; color: var(--muted); }
+  .agree a { text-decoration: underline; }
+  .form .btn { justify-self: start; padding: 14px 40px; }
+  .side p { margin: 0 0 8px; color: var(--text); }
+  .side hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+  @media (max-width: 860px) { .contact, .row { grid-template-columns: 1fr; } }
+</style>

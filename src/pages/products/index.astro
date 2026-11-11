@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ImageBox from '../../components/ImageBox.astro';
+import productsData from '../../data/products.json';
+const products = productsData.products;
+---
+<Layout title="공급제품">
+  <PageHero eyebrow="Product" title="공급제품" desc="분류를 선택하면 자세한 내용을 볼 수 있어요." />
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-3">
+        {products.map((p) => (
+          <a class="card" href={`/products/${p.slug}`}>
+            <ImageBox src={p.image} alt={p.title} />
+            <div class="card-body"><h3>{p.title}</h3><p>{p.summary}</p></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

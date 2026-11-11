@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SubNav from '../../components/SubNav.astro';
+import { aboutNav } from './_subnav';
+import site from '../../data/site.json';
+import ImageBox from '../../components/ImageBox.astro';
+import pages from '../../data/pages.json';
+const g = pages.greeting;
+const paras = g.body.split(/\n\s*\n/).filter(Boolean);
+---
+<Layout title="인사말">
+  <PageHero eyebrow="About" title="회사소개" />
+  <SubNav items={aboutNav} />
+  <section class="section">
+    <div class="container greeting">
+      <div>
+        <h2 class="section-title">인사말</h2>
+        <p class="lead">{g.lead}</p>
+        {paras.map((t) => <p>{t}</p>)}
+        <p class="sign">{site.name} 대표이사 <strong>{g.ceo}</strong></p>
+      </div>
+      <div class="photo"><ImageBox src={g.image} alt="대표 사진" /></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .greeting { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+  .lead { font-size: 1.3rem; font-weight: 700; color: var(--brand); }
+  .sign { margin-top: 32px; text-align: right; }
+  .photo { border-radius: 10px; overflow: hidden; }
+  @media (max-width: 860px) { .greeting { grid-template-columns: 1fr; } }
+</style>

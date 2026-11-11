@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SubNav from '../../components/SubNav.astro';
+import ImageBox from '../../components/ImageBox.astro';
+import { aboutNav } from './_subnav';
+import certsData from '../../data/certifications.json';
+const certs = certsData.certifications;
+---
+<Layout title="인증현황">
+  <PageHero eyebrow="About" title="회사소개" />
+  <SubNav items={aboutNav} />
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">인증현황</h2>
+      <p class="section-desc">인증서 목록은 src/data/certifications.json 파일에서 추가하거나 수정할 수 있어요.</p>
+      <div class="grid certs">
+        {certs.map((c) => (
+          <div class="card">
+            <ImageBox src={c.image} alt={c.title} />
+            <div class="card-body"><h3>{c.title}</h3><p>{c.issuer} · {c.date}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .certs { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .certs :global(.placeholder-img) { aspect-ratio: 3 / 4; }
+</style>

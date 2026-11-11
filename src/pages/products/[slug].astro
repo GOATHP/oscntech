@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SubNav from '../../components/SubNav.astro';
+import ImageBox from '../../components/ImageBox.astro';
+import productsData from '../../data/products.json';
+const products = productsData.products;
+
+export function getStaticPaths() {
+  return productsData.products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+const { product } = Astro.props;
+const tabs = products.map((p) => ({ label: p.title, href: `/products/${p.slug}` }));
+---
+<Layout title={product.title} description={product.summary}>
+  <PageHero eyebrow="Product" title="공급제품" />
+  <SubNav items={tabs} />
+  <section class="section">
+    <div class="container detail">
+      <ImageBox src={product.image} alt={product.title} />
+      <div>
+        <h2 class="section-title">{product.title}</h2>
+        <p class="section-desc">{product.summary}</p>
+        <ul class="items">
+          {product.items.map((i) => <li>{i}</li>)}
+        </ul>
+        <a class="btn" href="/contact">이 제품 문의하기</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .detail { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .detail :global(.placeholder-img) { border-radius: 10px; }
+  .items { padding-left: 20px; margin: 0 0 32px; }
+  .items li { margin-bottom: 6px; }
+  @media (max-width: 860px) { .detail { grid-template-columns: 1fr; } }
+</style>

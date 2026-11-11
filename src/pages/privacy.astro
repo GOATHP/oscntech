@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import site from '../data/site.json';
+---
+<Layout title="개인정보처리방침">
+  <PageHero title="개인정보처리방침" />
+  <section class="section">
+    <div class="container">
+      <p>{site.name}(이하 '회사')는 문의 접수를 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
+      <ul>
+        <li>수집 항목: 회사명, 담당자 이름, 연락처, 이메일</li>
+        <li>이용 목적: 문의 답변 및 상담</li>
+        <li>보유 기간: 문의 처리 완료 후 1년 (관련 법령에 따라 보관이 필요한 경우 해당 기간)</li>
+      </ul>
+      <p>개인정보 관련 문의: {site.email}</p>
+      <p style="color: var(--muted)">※ 실제 운영 전에 회사 상황에 맞게 내용을 확인해 주세요.</p>
+    </div>
+  </section>
+</Layout>

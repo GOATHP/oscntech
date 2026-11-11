@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import ImageBox from '../components/ImageBox.astro';
+
+import pages from '../data/pages.json';
+const { areas, steps } = pages.business;
+---
+<Layout title="사업분야">
+  <PageHero eyebrow="Business" title="사업분야" desc="주요 사업 영역을 소개합니다." />
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-3">
+        {areas.map((a) => (
+          <div class="card">
+            <ImageBox src={a.image} alt={a.title} />
+            <div class="card-body"><h3>{a.title}</h3><p>{a.desc}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section soft">
+    <div class="container">
+      <h2 class="section-title">진행 절차</h2>
+      <ol class="steps">
+        {steps.map((s, i) => <li><span>{String(i + 1).padStart(2, '0')}</span>{s}</li>)}
+      </ol>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .steps { list-style: none; padding: 0; margin: 32px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+  .steps li { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; font-weight: 600; text-align: center; }
+  .steps span { display: block; color: var(--brand); font-size: 1.4rem; font-weight: 800; }
+</style>
