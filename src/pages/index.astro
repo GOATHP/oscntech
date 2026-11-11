@@ -1,10 +1,11 @@
 ---
+import { u } from '../lib/url';
 import Layout from '../layouts/Layout.astro';
 import ImageBox from '../components/ImageBox.astro';
 import site from '../data/site.json';
 import pages from '../data/pages.json';
 const home = pages.home;
-const heroBg = home.heroImage || '/images/hero.jpg';
+const heroBg = u(home.heroImage || '/images/hero.jpg');
 import productsData from '../data/products.json';
 const products = productsData.products;
 ---
@@ -15,8 +16,8 @@ const products = productsData.products;
       <h1>{home.heroTitle.split('\n').map((l, i) => <>{i > 0 && <br />}{l}</>)}</h1>
       <p>{site.tagline}</p>
       <div class="actions">
-        <a class="btn" href="/products">제품 보기</a>
-        <a class="btn outline" href="/contact">상담 문의</a>
+        <a class="btn" href={u('/products')}>제품 보기</a>
+        <a class="btn outline" href={u('/contact')}>상담 문의</a>
       </div>
     </div>
   </section>
@@ -27,9 +28,9 @@ const products = productsData.products;
       <h2 class="section-title">회사소개</h2>
       <p class="section-desc">{home.intro}</p>
       <div class="grid cols-3">
-        <a class="card" href="/about"><div class="card-body"><h3>인사말</h3><p>대표 인사말과 경영 이념</p></div></a>
-        <a class="card" href="/about/certifications"><div class="card-body"><h3>인증현황</h3><p>보유 인증서와 특허</p></div></a>
-        <a class="card" href="/about/location"><div class="card-body"><h3>오시는 길</h3><p>본사와 공장 위치 안내</p></div></a>
+        <a class="card" href={u('/about')}><div class="card-body"><h3>인사말</h3><p>대표 인사말과 경영 이념</p></div></a>
+        <a class="card" href={u('/about/certifications')}><div class="card-body"><h3>인증현황</h3><p>보유 인증서와 특허</p></div></a>
+        <a class="card" href={u('/about/location')}><div class="card-body"><h3>오시는 길</h3><p>본사와 공장 위치 안내</p></div></a>
       </div>
     </div>
   </section>
@@ -41,7 +42,7 @@ const products = productsData.products;
       <p class="section-desc">제품 분류를 누르면 자세한 내용을 볼 수 있어요.</p>
       <div class="grid cols-3">
         {products.map((p) => (
-          <a class="card" href={`/products/${p.slug}`}>
+          <a class="card" href={u(`/products/${p.slug}`)}>
             <ImageBox src={p.image} alt={p.title} />
             <div class="card-body"><h3>{p.title}</h3><p>{p.summary}</p></div>
           </a>
@@ -54,7 +55,7 @@ const products = productsData.products;
     <div class="container">
       <h2>설비 상담이 필요하신가요?</h2>
       <p>{site.hours} · <a href={`tel:${site.tel}`}>{site.tel}</a></p>
-      <a class="btn" href="/contact">문의하기</a>
+      <a class="btn" href={u('/contact')}>문의하기</a>
     </div>
   </section>
 </Layout>

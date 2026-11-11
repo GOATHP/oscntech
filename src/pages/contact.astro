@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import site from '../data/site.json';
@@ -21,7 +22,7 @@ const FORM_ENDPOINT = ''; // 예: 'https://formspree.io/f/abcdwxyz'
           <label>이메일<input name="email" type="email" required /></label>
         </div>
         <label>문의 내용<textarea name="message" rows="7" required></textarea></label>
-        <label class="agree"><input type="checkbox" required /> 개인정보 수집 및 이용에 동의합니다. <a href="/privacy">내용 보기</a></label>
+        <label class="agree"><input type="checkbox" required /> 개인정보 수집 및 이용에 동의합니다. <a href={u('/privacy')}>내용 보기</a></label>
         <button class="btn" type="submit">보내기</button>
       </form>
       <aside class="side card">

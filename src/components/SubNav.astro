@@ -1,11 +1,12 @@
 ---
+import { u, currentPath } from '../lib/url';
 interface Props { items: { label: string; href: string }[] }
 const { items } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = currentPath(Astro.url.pathname);
 ---
 <nav class="subnav">
   <div class="container">
-    {items.map((i) => <a href={i.href} class:list={{ active: path === i.href }}>{i.label}</a>)}
+    {items.map((i) => <a href={u(i.href)} class:list={{ active: path === i.href }}>{i.label}</a>)}
   </div>
 </nav>
 

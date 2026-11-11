@@ -1,4 +1,5 @@
 ---
+import { u } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import SubNav from '../../components/SubNav.astro';
@@ -24,7 +25,7 @@ const tabs = products.map((p) => ({ label: p.title, href: `/products/${p.slug}` 
         <ul class="items">
           {product.items.map((i) => <li>{i}</li>)}
         </ul>
-        <a class="btn" href="/contact">이 제품 문의하기</a>
+        <a class="btn" href={u('/contact')}>이 제품 문의하기</a>
       </div>
     </div>
   </section>

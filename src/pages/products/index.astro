@@ -1,4 +1,5 @@
 ---
+import { u } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ImageBox from '../../components/ImageBox.astro';
@@ -11,7 +12,7 @@ const products = productsData.products;
     <div class="container">
       <div class="grid cols-3">
         {products.map((p) => (
-          <a class="card" href={`/products/${p.slug}`}>
+          <a class="card" href={u(`/products/${p.slug}`)}>
             <ImageBox src={p.image} alt={p.title} />
             <div class="card-body"><h3>{p.title}</h3><p>{p.summary}</p></div>
           </a>

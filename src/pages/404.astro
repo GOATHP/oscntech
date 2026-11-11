@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="페이지를 찾을 수 없어요">
@@ -6,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
       <h1>페이지를 찾을 수 없어요</h1>
       <p style="color: var(--muted)">주소가 바뀌었거나 없는 페이지예요.</p>
-      <a class="btn" href="/">메인으로</a>
+      <a class="btn" href={u('/')}>메인으로</a>
     </div>
   </section>
 </Layout>
