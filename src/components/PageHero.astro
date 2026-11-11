@@ -1,7 +1,7 @@
 ---
 import { u } from '../lib/url';
 import pages from '../data/pages.json';
-const heroImage = pages.home.heroImage;
+const heroImage = pages.home.subHeroImage || pages.home.slides?.[0]?.image || '';
 interface Props { title: string; eyebrow?: string; desc?: string }
 const { title, eyebrow, desc } = Astro.props;
 ---

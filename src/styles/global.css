@@ -40,7 +40,8 @@ img { max-width: 100%; display: block; }
 .card h3 { margin: 0 0 8px; font-size: 1.15rem; }
 .card p { margin: 0; color: var(--muted); font-size: .95rem; }
 .placeholder-img { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #e6e8eb, #cfd3d8); display: grid; place-items: center; color: #7a8899; font-size: .9rem; }
-.placeholder-img img { width: 100%; height: 100%; object-fit: cover; }
+.placeholder-img { position: relative; overflow: hidden; }
+.placeholder-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 14px 12px; border-bottom: 1px solid var(--line); text-align: left; }
 th { background: var(--bg-soft); font-weight: 600; }
@@ -49,3 +50,18 @@ th { background: var(--bg-soft); font-weight: 600; }
   .section-title { font-size: 1.6rem; }
   .table-wrap { overflow-x: auto; }
 }
+
+/* 스크롤 등장 효과 */
+[data-reveal] { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+[data-reveal].in { opacity: 1; transform: none; }
+[data-reveal-delay="1"] { transition-delay: .12s; }
+[data-reveal-delay="2"] { transition-delay: .24s; }
+[data-reveal-delay="3"] { transition-delay: .36s; }
+@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+/* 맨 위로 버튼 */
+.to-top { position: fixed; right: 24px; bottom: 24px; z-index: 90; width: 48px; height: 48px; border-radius: 50%; border: 0;
+  background: var(--brand-dark); color: #fff; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.2);
+  opacity: 0; pointer-events: none; transition: opacity .3s, background .2s; }
+.to-top.show { opacity: 1; pointer-events: auto; }
+.to-top:hover { background: var(--accent); }

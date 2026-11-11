@@ -1,12 +1,36 @@
 {
   "home": {
-    "heroTitle": "더 나은 미래를 위한 우리의 기술",
-    "heroImage": "",
+    "slides": [
+      {
+        "image": "",
+        "title": "더 나은 미래를 위한 우리의 기술",
+        "desc": "",
+        "linkLabel": "자세히 보기",
+        "link": "/business"
+      },
+      {
+        "image": "",
+        "title": "두 번째 슬라이드 문구를\n넣어 주세요",
+        "desc": "",
+        "linkLabel": "자세히 보기",
+        "link": "/products"
+      },
+      {
+        "image": "",
+        "title": "세 번째 슬라이드 문구를\n넣어 주세요",
+        "desc": "",
+        "linkLabel": "자세히 보기",
+        "link": "/references"
+      }
+    ],
+    "slideSeconds": "6",
+    "introTitle": "기술로 만드는 더 나은 현장",
     "intro": "차별화된 핵심 기술과 최고 수준의 전문가들로 구성된 팀이\n자동화의 꿈을 현실로 만들어 드립니다.",
-    "primaryButton": "제품 보기",
-    "secondaryButton": "상담 문의",
+    "businessTitle": "기술의 힘으로",
+    "businessDesc": "OSC&TECH가 하는 일을 소개합니다.",
     "ctaTitle": "설비 상담이 필요하신가요?",
-    "ctaButton": "문의하기"
+    "ctaButton": "문의하기",
+    "subHeroImage": ""
   },
   "greeting": {
     "lead": "고객의 신뢰에 기술로 답하겠습니다.",
@@ -39,6 +63,20 @@
       "제작",
       "설치 · 시운전",
       "사후 관리"
+    ]
+  },
+  "news": {
+    "items": [
+      {
+        "date": "2026-11-11",
+        "title": "홈페이지를 새롭게 오픈했습니다.",
+        "body": "OSC&TECH 홈페이지를 새롭게 열었습니다. 많은 관심 부탁드립니다."
+      },
+      {
+        "date": "2026-11-01",
+        "title": "소식 제목을 넣어 주세요.",
+        "body": "소식 내용을 적어 주세요."
+      }
     ]
   }
 }

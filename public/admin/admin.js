@@ -26,13 +26,22 @@
     {
       id: 'home', label: '메인 화면', path: 'src/data/pages.json', key: 'home',
       fields: [
-        T('heroTitle', '메인 큰 문구', '엔터로 줄을 바꿀 수 있어요 (두 줄 권장)'),
-        I('heroImage', '메인 배경 사진'),
-        T('intro', '회사소개 요약 문단'),
-        S('primaryButton', '첫 번째 버튼 글자'),
-        S('secondaryButton', '두 번째 버튼 글자'),
+        { type: 'list', name: 'slides', label: '메인 배너 슬라이드', itemLabel: '슬라이드', title: 'title',
+          fields: [
+            I('image', '배경 사진 (가로로 긴 큰 사진 권장)'),
+            T('title', '큰 문구', '엔터로 줄을 바꿀 수 있어요'),
+            T('desc', '작은 설명 (없어도 돼요)'),
+            S('linkLabel', '링크 글자', '예: 자세히 보기'),
+            S('link', '링크 주소', '예: /business, /products, /contact'),
+          ] },
+        S('slideSeconds', '슬라이드 넘어가는 시간 (초)'),
+        S('introTitle', '회사 소개 제목'),
+        T('intro', '회사 소개 문단', '엔터로 줄을 바꿀 수 있어요'),
+        S('businessTitle', '사업분야 제목'),
+        S('businessDesc', '사업분야 설명'),
         S('ctaTitle', '아래쪽 상담 안내 문구'),
         S('ctaButton', '아래쪽 버튼 글자'),
+        I('subHeroImage', '다른 페이지 상단 사진 (비우면 첫 슬라이드 사진)'),
       ],
     },
     {
@@ -50,6 +59,13 @@
         { type: 'list', name: 'areas', label: '사업분야 목록', itemLabel: '사업분야', title: 'title',
           fields: [S('title', '제목'), T('desc', '설명'), I('image', '사진')] },
         { type: 'strings', name: 'steps', label: '진행 절차', itemLabel: '단계' },
+      ],
+    },
+    {
+      id: 'news', label: '소식', path: 'src/data/pages.json', key: 'news',
+      fields: [
+        { type: 'list', name: 'items', label: '소식 목록 (위에 있을수록 먼저 보여요)', itemLabel: '소식', title: 'title',
+          fields: [S('date', '날짜', '예: 2026-11-11'), S('title', '제목'), T('body', '내용')] },
       ],
     },
     {

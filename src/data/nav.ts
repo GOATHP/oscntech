@@ -20,5 +20,12 @@ export const nav: NavItem[] = [
     href: '/products',
     children: products.map((p) => ({ label: p.title, href: `/products/${p.slug}` })),
   },
-  { label: '문의하기', href: '/contact' },
+  {
+    label: '고객지원',
+    href: '/contact',
+    children: [
+      { label: '문의하기', href: '/contact' },
+      { label: '소식', href: '/news' },
+    ],
+  },
 ];

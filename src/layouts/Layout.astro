@@ -5,8 +5,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import site from '../data/site.json';
 
-interface Props { title?: string; description?: string }
-const { title, description = site.tagline } = Astro.props;
+interface Props { title?: string; description?: string; transparentHeader?: boolean }
+const { title, description = site.tagline, transparentHeader = false } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : site.name;
 ---
 <!doctype html>
@@ -20,8 +20,24 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <title>{fullTitle}</title>
   </head>
   <body>
-    <Header />
+    <Header transparent={transparentHeader} />
     <main><slot /></main>
     <Footer />
+    <button class="to-top" aria-label="맨 위로">↑</button>
+    <script>
+      // 스크롤하면 섹션이 부드럽게 나타나는 효과
+      const items = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        }, { threshold: 0.12 });
+        items.forEach((el) => io.observe(el));
+      } else items.forEach((el) => el.classList.add('in'));
+      // 맨 위로 버튼
+      const top = document.querySelector<HTMLElement>('.to-top');
+      const onScroll = () => top?.classList.toggle('show', window.scrollY > 600);
+      window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+      top?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
   </body>
 </html>
