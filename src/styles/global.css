@@ -1,12 +1,14 @@
 /* 색상은 여기서 한 번에 바꿀 수 있어요 */
 :root {
-  --brand: #0b4f8a;
-  --brand-dark: #083a66;
-  --accent: #f0a500;
+  --brand: #4a5560;        /* 스틸 그레이 (배너, 상단 영역) */
+  --brand-dark: #2f363e;
+  --accent: #d0101e;       /* 로고 레드 (버튼, 강조) */
+  --accent-dark: #a60c18;
+  --footer: #262c33;
   --text: #1f2933;
   --muted: #5f6b7a;
   --line: #e3e8ee;
-  --bg-soft: #f5f7fa;
+  --bg-soft: #f2f4f6;
   --max: 1200px;
 }
 * { box-sizing: border-box; }
@@ -26,9 +28,9 @@ img { max-width: 100%; display: block; }
 .section.soft { background: var(--bg-soft); }
 .section-title { font-size: 2rem; margin: 0 0 12px; }
 .section-desc { color: var(--muted); margin: 0 0 40px; }
-.eyebrow { color: var(--brand); font-weight: 700; letter-spacing: .08em; font-size: .85rem; text-transform: uppercase; }
-.btn { display: inline-block; padding: 12px 24px; border-radius: 6px; background: var(--brand); color: #fff; font-weight: 600; border: 0; cursor: pointer; font-size: 1rem; }
-.btn:hover { background: var(--brand-dark); }
+.eyebrow { color: var(--accent); font-weight: 700; letter-spacing: .08em; font-size: .85rem; text-transform: uppercase; }
+.btn { display: inline-block; padding: 12px 24px; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 600; border: 0; cursor: pointer; font-size: 1rem; }
+.btn:hover { background: var(--accent-dark); }
 .btn.outline { background: transparent; border: 1px solid #fff; }
 .grid { display: grid; gap: 24px; }
 .grid.cols-3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
@@ -37,7 +39,7 @@ img { max-width: 100%; display: block; }
 .card-body { padding: 20px; }
 .card h3 { margin: 0 0 8px; font-size: 1.15rem; }
 .card p { margin: 0; color: var(--muted); font-size: .95rem; }
-.placeholder-img { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #dfe6ee, #c9d4e0); display: grid; place-items: center; color: #7a8899; font-size: .9rem; }
+.placeholder-img { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #e6e8eb, #cfd3d8); display: grid; place-items: center; color: #7a8899; font-size: .9rem; }
 .placeholder-img img { width: 100%; height: 100%; object-fit: cover; }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 14px 12px; border-bottom: 1px solid var(--line); text-align: left; }

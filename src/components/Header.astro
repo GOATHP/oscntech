@@ -36,10 +36,10 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   .nav > ul { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
   .nav-item { position: relative; }
   .nav-item > a { display: block; padding: 24px 16px; font-weight: 600; }
-  .nav-item.active > a, .nav-item > a:hover { color: var(--brand); }
+  .nav-item.active > a, .nav-item > a:hover { color: var(--accent); }
   .sub { display: none; position: absolute; top: 100%; left: 0; min-width: 180px; background: #fff; border: 1px solid var(--line); border-radius: 8px; list-style: none; margin: 0; padding: 8px 0; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
   .sub a { display: block; padding: 8px 18px; font-size: .95rem; }
-  .sub a:hover { background: var(--bg-soft); color: var(--brand); }
+  .sub a:hover { background: var(--bg-soft); color: var(--accent); }
   .nav-item:hover .sub, .nav-item:focus-within .sub { display: block; }
   .menu-toggle { display: none; background: none; border: 0; font-size: 1.6rem; cursor: pointer; }
   @media (max-width: 860px) {
