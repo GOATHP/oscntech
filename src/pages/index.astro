@@ -16,8 +16,8 @@ const products = productsData.products;
       <h1>{home.heroTitle.split('\n').map((l, i) => <>{i > 0 && <br />}{l}</>)}</h1>
       <p>{site.tagline}</p>
       <div class="actions">
-        <a class="btn" href={u('/products')}>제품 보기</a>
-        <a class="btn outline" href={u('/contact')}>상담 문의</a>
+        <a class="btn" href={u('/products')}>{home.primaryButton}</a>
+        <a class="btn outline" href={u('/contact')}>{home.secondaryButton}</a>
       </div>
     </div>
   </section>
@@ -53,9 +53,9 @@ const products = productsData.products;
 
   <section class="cta">
     <div class="container">
-      <h2>설비 상담이 필요하신가요?</h2>
+      <h2>{home.ctaTitle}</h2>
       <p>{site.hours} · <a href={`tel:${site.tel}`}>{site.tel}</a></p>
-      <a class="btn" href={u('/contact')}>문의하기</a>
+      <a class="btn" href={u('/contact')}>{home.ctaButton}</a>
     </div>
   </section>
 </Layout>
