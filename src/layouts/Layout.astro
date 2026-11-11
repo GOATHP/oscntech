@@ -8,6 +8,10 @@ import site from '../data/site.json';
 interface Props { title?: string; description?: string; transparentHeader?: boolean }
 const { title, description = site.tagline, transparentHeader = false } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : site.name;
+// 카카오톡, 문자 등에서 링크 공유 시 보이는 미리보기
+const abs = (p: string) => new URL(u(p), Astro.site).href;
+const shareImage = abs(site.shareImage || '/og.jpg');
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="ko">
@@ -18,6 +22,20 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <link rel="icon" type="image/png" href={u('/favicon.png')} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <title>{fullTitle}</title>
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage} />
   </head>
   <body>
     <Header transparent={transparentHeader} />
