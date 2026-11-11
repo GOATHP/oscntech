@@ -260,6 +260,30 @@
     return box;
   }
 
+  function shrink(src, type) {
+    return new Promise((ok) => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 2000;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        // 투명 배경이 있는 PNG(로고 등)는 그대로 PNG로 둬요
+        if (type === 'image/png') {
+          ctx.drawImage(img, 0, 0, w, h);
+          const data = ctx.getImageData(0, 0, w, h).data;
+          for (let i = 3; i < data.length; i += 4 * 97) if (data[i] < 255) return ok(scale < 1 ? { dataUrl: c.toDataURL('image/png'), ext: 'png' } : null);
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+        }
+        ctx.drawImage(img, 0, 0, w, h);
+        ok({ dataUrl: c.toDataURL('image/jpeg', 0.85), ext: 'jpg' });
+      };
+      img.onerror = () => ok(null);
+      img.src = src;
+    });
+  }
+
   function imageWidget(obj, name) {
     const preview = el('div', { class: 'preview' });
     const showPreview = (src) => {
@@ -272,11 +296,16 @@
     fileInput.addEventListener('change', async () => {
       const file = fileInput.files[0]; if (!file) return;
       if (file.size > 8 * 1024 * 1024) { msg.textContent = '8MB 이하 사진만 올릴 수 있어요.'; msg.className = 'msg error'; return; }
-      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
-      const fname = Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.' + ext;
       msg.textContent = '사진 올리는 중...'; msg.className = 'msg';
       try {
-        const dataUrl = await new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+        // 큰 사진은 가로 2000px 이하 JPG로 줄여서 올려요 (사이트가 빨리 열리게)
+        let dataUrl = await new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+        let ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (/^image\/(jpeg|png|webp)$/.test(file.type)) {
+          const shrunk = await shrink(String(dataUrl), file.type);
+          if (shrunk) { dataUrl = shrunk.dataUrl; ext = shrunk.ext; }
+        }
+        const fname = Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.' + ext;
         await api('/file', { method: 'PUT', body: JSON.stringify({ path: 'public/images/' + fname, base64: String(dataUrl).split(',')[1], message: '관리자 사진 업로드: ' + fname }) });
         obj[name] = '/images/' + fname;
         showPreview(dataUrl);
