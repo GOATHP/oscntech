@@ -27,14 +27,9 @@ npm run build    # dist/ 폴더에 배포용 파일 생성
 - 로고: `public/images/logo.png` 넣고 `src/components/Header.astro` 주석 해제
 
 ## 관리자 페이지 (/admin)
-코드를 몰라도 위 JSON 내용(회사 정보, 메인 문구, 인사말, 사업분야, 제품, 실적, 인증서, 사진)을 화면에서 고칠 수 있어요.
+비밀번호 하나로 들어가서 회사 정보, 메인 문구, 버튼 글자, 인사말, 사업분야, 제품, 실적, 인증서, 사진을 고칠 수 있어요.
+저장하면 GitHub에 자동으로 커밋되고 1~2분 뒤 사이트에 반영돼요.
 
-**내 컴퓨터에서 써 보기**
-1. 터미널 1: `npm run dev`
-2. 터미널 2: `npx decap-server`
-3. 브라우저에서 http://localhost:4321/admin/index.html → 로그인 버튼 → 수정 → 저장
-   (저장하면 src/data/*.json 파일이 바로 바뀌어요)
-
-**배포 후 친구가 쓰려면**
-- `public/admin/config.yml` 의 `repo` 를 실제 GitHub 저장소로 바꾸고,
-- GitHub 로그인(OAuth) 연결이 필요해요. 사이트를 Cloudflare Pages에 올린 다음 설정해요.
+- 관리자 화면: `src/pages/admin/index.astro`, `public/admin/admin.js`
+- 저장 서버(Cloudflare Worker): `admin-server/worker.js` — 세팅 방법은 `admin-server/README.md`
+- 저장 서버 주소: `src/data/admin.json` 의 `apiUrl`
