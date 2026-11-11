@@ -1,8 +1,11 @@
 ---
+import { u } from '../lib/url';
+import pages from '../data/pages.json';
+const heroImage = pages.home.heroImage;
 interface Props { title: string; eyebrow?: string; desc?: string }
 const { title, eyebrow, desc } = Astro.props;
 ---
-<section class="page-hero">
+<section class="page-hero" style={heroImage ? `background: url('${u(heroImage)}') center / cover, var(--brand-dark)` : undefined}>
   <div class="container">
     {eyebrow && <div class="eyebrow">{eyebrow}</div>}
     <h1>{title}</h1>
@@ -14,5 +17,6 @@ const { title, eyebrow, desc } = Astro.props;
   .page-hero { background: linear-gradient(120deg, var(--brand-dark), var(--brand)); color: #fff; padding: 72px 0 56px; }
   .page-hero .eyebrow { color: rgba(255,255,255,.75); }
   h1 { margin: 6px 0 8px; font-size: 2.2rem; }
+  h1, p, .eyebrow { text-shadow: 0 2px 12px rgba(0,0,0,.55); }
   p { margin: 0; opacity: .85; }
 </style>
