@@ -8,6 +8,7 @@
   const S = (name, label, hint) => ({ type: 'string', name, label, hint });
   const T = (name, label, hint) => ({ type: 'text', name, label, hint });
   const I = (name, label) => ({ type: 'image', name, label });
+  const V = (name, label) => ({ type: 'video', name, label });
 
   const FILES = [
     {
@@ -30,6 +31,7 @@
         { type: 'list', name: 'slides', label: '메인 배너 슬라이드', itemLabel: '슬라이드', title: 'title',
           fields: [
             I('image', '배경 사진 (가로로 긴 큰 사진 권장)'),
+            V('video', '배경 영상 (넣으면 사진 대신 소리 없이 반복 재생, MP4 30MB 이하)'),
             T('title', '큰 문구', '엔터로 줄을 바꿀 수 있어요'),
             T('desc', '작은 설명 (없어도 돼요)'),
             S('linkLabel', '링크 글자', '예: 자세히 보기'),
@@ -209,6 +211,7 @@
     }
     const wrap = el('div', { class: 'field' }, el('label', {}, f.label));
     if (f.type === 'image') wrap.append(imageWidget(obj, f.name));
+    else if (f.type === 'video') wrap.append(videoWidget(obj, f.name));
     else {
       const input = f.type === 'text' ? el('textarea') : el('input', { type: 'text' });
       input.value = obj[f.name] ?? '';
@@ -319,6 +322,39 @@
     return el('div', { class: 'img' }, preview,
       el('button', { class: 'ghost small', type: 'button', onclick: () => fileInput.click() }, '사진 선택'),
       el('button', { class: 'danger small', type: 'button', onclick: () => { obj[name] = ''; showPreview(''); markDirty(); } }, '빼기'),
+      fileInput, msg);
+  }
+
+  function videoWidget(obj, name) {
+    const preview = el('video', { class: 'preview', muted: true, loop: true, playsinline: true, autoplay: true });
+    preview.muted = true;
+    const empty = el('div', { class: 'preview' }, '영상 없음');
+    const box = el('div', { class: 'vbox' });
+    const show = (src) => { box.innerHTML = ''; if (src) { preview.src = src; box.append(preview); } else box.append(empty); };
+    show(obj[name] ? BASE + obj[name] : '');
+    const fileInput = el('input', { type: 'file', accept: 'video/mp4,video/webm', hidden: true });
+    const msg = el('span', { class: 'msg' });
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0]; if (!file) return;
+      if (file.size > 30 * 1024 * 1024) { msg.textContent = '30MB 이하 영상만 올릴 수 있어요. 길이를 줄이거나 화질을 낮춰 주세요.'; msg.className = 'msg error'; return; }
+      const ext = file.type === 'video/webm' ? 'webm' : 'mp4';
+      const fname = Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.' + ext;
+      msg.textContent = '영상 올리는 중... (용량에 따라 1분 정도 걸려요)'; msg.className = 'msg';
+      try {
+        const dataUrl = await new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+        await api('/file', { method: 'PUT', body: JSON.stringify({ path: 'public/videos/' + fname, base64: String(dataUrl).split(',')[1], message: '관리자 영상 업로드: ' + fname }) });
+        obj[name] = '/videos/' + fname;
+        show(URL.createObjectURL(file));
+        msg.textContent = '올렸어요. 저장하기를 눌러야 사이트에 적용돼요.'; msg.className = 'msg ok';
+        markDirty();
+      } catch (err) {
+        msg.textContent = err.message; msg.className = 'msg error';
+      }
+      fileInput.value = '';
+    });
+    return el('div', { class: 'img' }, box,
+      el('button', { class: 'ghost small', type: 'button', onclick: () => fileInput.click() }, '영상 선택'),
+      el('button', { class: 'danger small', type: 'button', onclick: () => { obj[name] = ''; show(''); markDirty(); } }, '빼기'),
       fileInput, msg);
   }
 

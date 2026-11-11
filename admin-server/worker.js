@@ -16,8 +16,10 @@
 const ALLOWED_PATHS = [
   /^src\/data\/(site|pages|products|references|certifications)\.json$/,
   /^public\/images\/[A-Za-z0-9._-]+\.(jpg|jpeg|png|webp|gif|svg)$/i,
+  /^public\/videos\/[A-Za-z0-9._-]+\.(mp4|webm)$/i,
 ];
-const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 30 * 1024 * 1024;
 
 export default {
   async fetch(request, env) {
@@ -84,7 +86,10 @@ export default {
         let base64;
         if (typeof body.base64 === 'string') {
           base64 = body.base64;
-          if (base64.length * 0.75 > MAX_UPLOAD_BYTES) return json({ error: '사진이 너무 커요 (8MB 이하).' }, 400);
+          const isVideo = path.startsWith('public/videos/');
+          if (base64.length * 0.75 > (isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES)) {
+            return json({ error: isVideo ? '영상이 너무 커요 (30MB 이하).' : '사진이 너무 커요 (8MB 이하).' }, 400);
+          }
         } else if (typeof body.content === 'string') {
           if (path.endsWith('.json')) {
             try { JSON.parse(body.content); } catch { return json({ error: '내용 형식이 깨져서 저장하지 않았어요.' }, 400); }

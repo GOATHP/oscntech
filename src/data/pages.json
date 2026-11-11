@@ -6,21 +6,24 @@
         "title": "더 나은 미래를 위한 우리의 기술",
         "desc": "",
         "linkLabel": "자세히 보기",
-        "link": "/business"
+        "link": "/business",
+        "video": ""
       },
       {
         "image": "/images/1794381901141-a410c.jpg",
         "title": "두 번째 슬라이드 문구를\n넣어 주세요",
         "desc": "",
         "linkLabel": "자세히 보기",
-        "link": "/products"
+        "link": "/products",
+        "video": ""
       },
       {
         "image": "/images/1794381905763-fvtl0.jpg",
         "title": "세 번째 슬라이드 문구를\n넣어 주세요",
         "desc": "",
         "linkLabel": "자세히 보기",
-        "link": "/references"
+        "link": "/references",
+        "video": ""
       }
     ],
     "slideSeconds": "6",

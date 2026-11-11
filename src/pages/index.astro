@@ -19,7 +19,12 @@ const lines = (t: string) => (t || '').split('\n');
   <section class="hero" data-seconds={seconds}>
     {slides.map((s, i) => (
       <div class:list={['slide', { active: i === 0 }]}>
-        <div class="slide-bg" style={s.image ? `background-image: url('${u(s.image)}')` : undefined}></div>
+        <div class="slide-bg" style={s.image ? `background-image: url('${u(s.image)}')` : undefined}>
+          {s.video && (
+            <video class="slide-video" src={u(s.video)} poster={s.image ? u(s.image) : undefined}
+              muted loop playsinline preload={i === 0 ? 'auto' : 'metadata'} autoplay={i === 0}></video>
+          )}
+        </div>
         <div class="container slide-text">
           <div class="eyebrow">{site.name}</div>
           <h2 class="slide-title">{lines(s.title).map((l, j) => <>{j > 0 && <br />}{l}</>)}</h2>
@@ -140,6 +145,7 @@ const lines = (t: string) => (t || '').split('\n');
   .slide.active { opacity: 1; z-index: 1; }
   .slide-bg { position: absolute; inset: 0; background: linear-gradient(120deg, var(--brand-dark), var(--brand)) center / cover no-repeat; }
   .slide-bg[style] { background-size: cover; background-position: center; }
+  .slide-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .slide.active .slide-bg { animation: zoom 9s ease-out both; }
   @keyframes zoom { from { transform: scale(1.1); } to { transform: scale(1); } }
   .slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.45), rgba(0,0,0,0) 65%); }
@@ -241,8 +247,10 @@ const lines = (t: string) => (t || '').split('\n');
     };
     const go = (n: number) => {
       slides[i].classList.remove('active');
+      slides[i].querySelector('video')?.pause();
       i = (n + slides.length) % slides.length;
       slides[i].classList.add('active');
+      slides[i].querySelector('video')?.play().catch(() => {});
       if (cur) cur.textContent = String(i + 1).padStart(2, '0');
       restart();
     };
