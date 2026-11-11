@@ -4,15 +4,17 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import site from '../data/site.json';
 
-// 문의 폼 연결: formspree.io 에서 무료 가입 후 폼을 만들면 나오는 주소를 아래에 넣어 주세요.
-// 비워 두면 '보내기' 버튼이 메일 앱을 열어요.
-const FORM_ENDPOINT = ''; // 예: 'https://formspree.io/f/abcdwxyz'
+// 문의는 FormSubmit(무료, 가입 없음)을 통해 회사 메일로 바로 전달돼요.
+// 처음 한 번은 회사 메일로 온 'Activate Form' 메일의 버튼을 눌러야 해요.
+// 전송이 안 되면 방문자의 메일 앱을 열어서 보내게 해요.
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${site.email}`;
 ---
 <Layout title="문의하기">
   <PageHero eyebrow="Contact" title="문의하기" desc="설비 견적과 상담 문의를 남겨 주시면 빠르게 연락드리겠습니다." />
   <section class="section">
     <div class="container contact">
-      <form class="form" method="POST" action={FORM_ENDPOINT || `mailto:${site.email}`} enctype={FORM_ENDPOINT ? undefined : 'text/plain'}>
+      <form class="form" id="contact-form" data-endpoint={FORM_ENDPOINT} data-email={site.email}>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
         <div class="row">
           <label>회사명<input name="company" required /></label>
           <label>담당자<input name="name" required /></label>
@@ -24,6 +26,7 @@ const FORM_ENDPOINT = ''; // 예: 'https://formspree.io/f/abcdwxyz'
         <label>문의 내용<textarea name="message" rows="7" required></textarea></label>
         <label class="agree"><input type="checkbox" required /> 개인정보 수집 및 이용에 동의합니다. <a href={u('/privacy')}>내용 보기</a></label>
         <button class="btn" type="submit">보내기</button>
+        <p class="form-msg" role="status"></p>
       </form>
       <aside class="side card">
         <div class="card-body">
@@ -52,5 +55,45 @@ const FORM_ENDPOINT = ''; // 예: 'https://formspree.io/f/abcdwxyz'
   .form .btn { justify-self: start; padding: 14px 40px; }
   .side p { margin: 0 0 8px; color: var(--text); }
   .side hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+  .form-msg { margin: 0; min-height: 1.4em; color: var(--muted); }
+  .form-msg.ok { color: #1a7f37; font-weight: 600; }
+  .form-msg.error { color: var(--accent); }
   @media (max-width: 860px) { .contact, .row { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  if (form) {
+    const msg = form.querySelector<HTMLElement>('.form-msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const labels: Record<string, string> = { company: '회사명', name: '담당자', phone: '연락처', email: '이메일', message: '문의 내용' };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      if (fd.get('_honey')) return;
+      const data: Record<string, string> = {};
+      for (const k of Object.keys(labels)) data[labels[k]] = String(fd.get(k) ?? '').trim();
+      const subject = `[홈페이지 문의] ${data['회사명']} ${data['담당자']}`;
+      const mailto = () => {
+        const body = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n');
+        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      };
+      btn.disabled = true; msg.className = 'form-msg'; msg.textContent = '보내는 중...';
+      try {
+        const res = await fetch(form.dataset.endpoint!, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...data, _subject: subject, _replyto: data['이메일'], _template: 'table', _captcha: 'false' }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && String(json.success) === 'true') {
+          form.reset();
+          msg.className = 'form-msg ok'; msg.textContent = '문의가 접수되었습니다. 빠르게 연락드리겠습니다.';
+        } else throw new Error(json.message || 'fail');
+      } catch {
+        msg.className = 'form-msg error'; msg.textContent = '바로 전송이 안 되어 메일 앱으로 보내기를 엽니다.';
+        mailto();
+      } finally { btn.disabled = false; }
+    });
+  }
+</script>
